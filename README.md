@@ -25,6 +25,8 @@ in project folder to install all dependencies.
 
 ### Src folder structure
 
+</br>
+
 ```
 src
 │   App.js
@@ -85,3 +87,50 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Server side -> go to /server folder
+
+</br>
+
+In the /server folder run command:
+
+```bash
+npm install
+```
+
+and then start server with:
+
+```bash
+npm start
+```
+
+Server should be running on port 3001, proxy is already in client package.json file.
+
+</br>
+
+### Server folder structure (Will change later prob)
+
+</br>
+
+```
+src
+│   index.js
+|   package.json
+|   ...
+│
+└───routes
+│   │   exampleRoute.js
+|   |   ...
+│   │
+└───models
+|   |   ...
+|   |
+└───middlewares
+|   |   ...
+|   |
+```
+
+-   index.js in main file od the server
+-   routes - folder with all routes files, in will be different later
+-   models - folder with all the schemas for database etc
+-   middleware - contains middlewares like auth or sth like that
