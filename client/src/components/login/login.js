@@ -4,20 +4,44 @@ import { Link } from 'react-router-dom';
 import { GridBreak } from '../../utils/gridBreak';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import FBapp from '../../utils/firebase-config';
 
 export const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
+    const auth = getAuth(FBapp);
     // const redirectPath = location.state?.path || '/home';
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+    
+    const signIn = (email, password) => {
 
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            localStorage.setItem("isAuth",true);
+           // setIsAuth(true);
+            console.log(user);
+            alert("Pomyślnie zalogowano");
+            navigate("/");
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            //const errorMessage = error.message;
+            alert(errorCode)
+            // ..
+          });    
+    }
     const handleLogin = (data) => {
-        console.log('login');
+        console.log(data);
+        signIn(data.email, data.password)
     };
 
     return (

@@ -5,6 +5,10 @@ import { GridBreak } from '../../utils/gridBreak';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import {addDoc, collection} from 'firebase/firestore';
+import {db, auth} from "../../utils/firebase-config";
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import FBapp from '../../utils/firebase-config';
 
 export const validationSchema = yup.object().shape({
     email: yup.string().required('Email is required').email('Email is invalid'),
@@ -25,7 +29,7 @@ export const validationSchema = yup.object().shape({
     surname: yup.string().required('Last name is required'),
     nickName: yup.string().required('Username is required'),
     phoneNumber: yup.string().required('Phone number is required'),
-    requestAddressDto: yup.object().shape({
+    address: yup.object().shape({
         country: yup.string().required('Country is required'),
         city: yup.string().required('City is required'),
         street: yup.string().required('Street is required'),
@@ -47,6 +51,34 @@ export const SignUp = (props) => {
     });
 
     const [open, setOpen] = useState(false);
+    const auth = getAuth(FBapp);
+    const userCollection = collection(db, "Użytkownicy");
+    
+     const createUser = async(user) => {
+        await addDoc(userCollection, user);
+        navigate("/");
+    };
+
+    const signUp = (email, password) =>{
+     
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in 
+            //  const user = userCredential.user;
+            localStorage.setItem("isAuth",true);
+            //setIsAuth(true);
+            //console.log(user);
+            alert("Pomyślnie utworzono konto");
+            navigate("/");
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            //const errorMessage = error.message;
+            alert(errorCode)
+            // ..
+          });    
+}
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -59,6 +91,8 @@ export const SignUp = (props) => {
     const onSubmit = () => {
         const data = getValues();
         console.log(data);
+        signUp(data.email, data.password)
+        createUser(data)
     };
 
     return (
@@ -173,15 +207,15 @@ export const SignUp = (props) => {
                                             required
                                             label='Country'
                                             size='small'
-                                            {...register('requestAddressDto.country')}
+                                            {...register('address.country')}
                                             error={
-                                                errors.requestAddressDto && errors.requestAddressDto.country
+                                                errors.address && errors.address.country
                                                     ? true
                                                     : false
                                             }
                                             helperText={
-                                                errors.requestAddressDto && errors.requestAddressDto.country
-                                                    ? errors.requestAddressDto.country.message
+                                                errors.address && errors.address.country
+                                                    ? errors.address.country.message
                                                     : null
                                             }
                                         ></TextField>
@@ -189,15 +223,15 @@ export const SignUp = (props) => {
                                             required
                                             label='Postal code'
                                             size='small'
-                                            {...register('requestAddressDto.postalCode')}
+                                            {...register('address.postalCode')}
                                             error={
-                                                errors.requestAddressDto && errors.requestAddressDto.postalCode
+                                                errors.address && errors.address.postalCode
                                                     ? true
                                                     : false
                                             }
                                             helperText={
-                                                errors.requestAddressDto && errors.requestAddressDto.postalCode
-                                                    ? errors.requestAddressDto.postalCode.message
+                                                errors.address && errors.address.postalCode
+                                                    ? errors.address.postalCode.message
                                                     : null
                                             }
                                         ></TextField>
@@ -211,13 +245,13 @@ export const SignUp = (props) => {
                                             required
                                             label='City'
                                             size='small'
-                                            {...register('requestAddressDto.city')}
+                                            {...register('address.city')}
                                             error={
-                                                errors.requestAddressDto && errors.requestAddressDto.city ? true : false
+                                                errors.address && errors.address.city ? true : false
                                             }
                                             helperText={
-                                                errors.requestAddressDto && errors.requestAddressDto.city
-                                                    ? errors.requestAddressDto.city.message
+                                                errors.address && errors.address.city
+                                                    ? errors.address.city.message
                                                     : null
                                             }
                                         ></TextField>
@@ -225,15 +259,15 @@ export const SignUp = (props) => {
                                             required
                                             label='Street'
                                             size='small'
-                                            {...register('requestAddressDto.street')}
+                                            {...register('address.street')}
                                             error={
-                                                errors.requestAddressDto && errors.requestAddressDto.street
+                                                errors.address && errors.address.street
                                                     ? true
                                                     : false
                                             }
                                             helperText={
-                                                errors.requestAddressDto && errors.requestAddressDto.street
-                                                    ? errors.requestAddressDto.street.message
+                                                errors.address && errors.address.street
+                                                    ? errors.address.street.message
                                                     : null
                                             }
                                         ></TextField>
@@ -247,22 +281,22 @@ export const SignUp = (props) => {
                                             required
                                             label='Building number'
                                             size='small'
-                                            {...register('requestAddressDto.buildingNo')}
+                                            {...register('address.buildingNo')}
                                             error={
-                                                errors.requestAddressDto && errors.requestAddressDto.buildingNo
+                                                errors.address && errors.address.buildingNo
                                                     ? true
                                                     : false
                                             }
                                             helperText={
-                                                errors.requestAddressDto && errors.requestAddressDto.buildingNo
-                                                    ? errors.requestAddressDto.buildingNo.message
+                                                errors.address && errors.address.buildingNo
+                                                    ? errors.address.buildingNo.message
                                                     : null
                                             }
                                         ></TextField>
                                         <TextField
                                             label='Apartment number'
                                             size='small'
-                                            {...register('requestAddressDto.apartmentNo')}
+                                            {...register('address.apartmentNo')}
                                         ></TextField>
                                     </Stack>
                                 </Grid>
@@ -279,7 +313,7 @@ export const SignUp = (props) => {
                                     <Button
                                         variant='contained'
                                         sx={{ width: 1 / 1 }}
-                                        onClick={handleSubmit(handleClickOpen)}
+                                        type = "submit"
                                     >
                                         Join Leaser
                                     </Button>
