@@ -9,6 +9,7 @@ import { NoMatch } from './utils/noMatch';
 import { useAuth, AuthProvider } from './utils/authContext';
 import { Addpost } from './components/posts/AddPost';
 import { Navbar } from './components/navbar/navbar';
+import { UserProfileMain } from './components/userProfile/userProfileMain';
 
 function App() {
     return (
@@ -44,6 +45,16 @@ function App() {
                             </PrivatePath>
                         }
                     ></Route>
+
+                    <Route
+                        path='user'
+                        element={
+                            <PrivatePath>
+                                <UserProfileMain></UserProfileMain>
+                            </PrivatePath>
+                        }
+                    ></Route>
+
                     <Route path='*' element={<NoMatch></NoMatch>} />
                 </Routes>
             </AuthProvider>

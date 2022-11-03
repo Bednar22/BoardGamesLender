@@ -13,7 +13,7 @@ import { useAuth } from '../../utils/authContext';
 export const UserLoggedButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const currentUser = useAuth();
+    const { currentUser } = useAuth();
     const { logout } = useAuth();
 
     const handleClick = (event) => {
@@ -22,7 +22,6 @@ export const UserLoggedButton = (props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const navigate = useNavigate();
 
     return (
         <>
@@ -82,7 +81,7 @@ export const UserLoggedButton = (props) => {
                         <Typography color='MenuText'>Profile</Typography>
                     </MenuItem>
                 </Link> */}
-                <Link to='/user/wallet' className='link-text'>
+                <Link to='/user' className='link-text'>
                     <MenuItem>
                         <ListItemIcon>
                             <AccountBalanceWalletIcon fontSize='small' />
