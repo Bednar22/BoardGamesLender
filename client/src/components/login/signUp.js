@@ -5,10 +5,10 @@ import { GridBreak } from '../../utils/gridBreak';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {addDoc, collection} from 'firebase/firestore';
-import {db, auth} from "../../utils/firebase-config";
+import { addDoc, collection } from 'firebase/firestore';
+import { db, auth } from '../../utils/firebase-config';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import FBapp from '../../utils/firebase-config';
+import { useAuth } from '../../utils/authContext';
 
 export const validationSchema = yup.object().shape({
     email: yup.string().required('Email is required').email('Email is invalid'),
@@ -40,6 +40,7 @@ export const validationSchema = yup.object().shape({
 
 export const SignUp = (props) => {
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const {
         register,
@@ -49,50 +50,32 @@ export const SignUp = (props) => {
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
+    const { signup } = useAuth();
 
-    const [open, setOpen] = useState(false);
-    const auth = getAuth(FBapp);
-    const userCollection = collection(db, "Użytkownicy");
-    
-     const createUser = async(user) => {
+    const userCollection = collection(db, 'Użytkownicy');
+
+    const createUser = async (user) => {
         await addDoc(userCollection, user);
-        navigate("/");
     };
 
-    const signUp = (email, password) =>{
-     
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in 
-            //  const user = userCredential.user;
-            localStorage.setItem("isAuth",true);
-            //setIsAuth(true);
-            //console.log(user);
-            alert("Pomyślnie utworzono konto");
-            navigate("/");
-            // ...
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            //const errorMessage = error.message;
-            alert(errorCode)
-            // ..
-          });    
-}
+    const addNewUser = async (email, password) => {
+        try {
+            setError('');
+            setLoading(true);
+            await signup(email, password);
+        } catch {
+            setError('Failed to create an account');
+        }
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
+        setLoading(false);
     };
 
     const onSubmit = () => {
         const data = getValues();
         console.log(data);
-        signUp(data.email, data.password)
-        createUser(data)
+        addNewUser(data.email, data.password);
+        createUser(data);
+        navigate('/login');
     };
 
     return (
@@ -208,11 +191,7 @@ export const SignUp = (props) => {
                                             label='Country'
                                             size='small'
                                             {...register('address.country')}
-                                            error={
-                                                errors.address && errors.address.country
-                                                    ? true
-                                                    : false
-                                            }
+                                            error={errors.address && errors.address.country ? true : false}
                                             helperText={
                                                 errors.address && errors.address.country
                                                     ? errors.address.country.message
@@ -224,11 +203,7 @@ export const SignUp = (props) => {
                                             label='Postal code'
                                             size='small'
                                             {...register('address.postalCode')}
-                                            error={
-                                                errors.address && errors.address.postalCode
-                                                    ? true
-                                                    : false
-                                            }
+                                            error={errors.address && errors.address.postalCode ? true : false}
                                             helperText={
                                                 errors.address && errors.address.postalCode
                                                     ? errors.address.postalCode.message
@@ -246,9 +221,7 @@ export const SignUp = (props) => {
                                             label='City'
                                             size='small'
                                             {...register('address.city')}
-                                            error={
-                                                errors.address && errors.address.city ? true : false
-                                            }
+                                            error={errors.address && errors.address.city ? true : false}
                                             helperText={
                                                 errors.address && errors.address.city
                                                     ? errors.address.city.message
@@ -260,11 +233,7 @@ export const SignUp = (props) => {
                                             label='Street'
                                             size='small'
                                             {...register('address.street')}
-                                            error={
-                                                errors.address && errors.address.street
-                                                    ? true
-                                                    : false
-                                            }
+                                            error={errors.address && errors.address.street ? true : false}
                                             helperText={
                                                 errors.address && errors.address.street
                                                     ? errors.address.street.message
@@ -282,11 +251,7 @@ export const SignUp = (props) => {
                                             label='Building number'
                                             size='small'
                                             {...register('address.buildingNo')}
-                                            error={
-                                                errors.address && errors.address.buildingNo
-                                                    ? true
-                                                    : false
-                                            }
+                                            error={errors.address && errors.address.buildingNo ? true : false}
                                             helperText={
                                                 errors.address && errors.address.buildingNo
                                                     ? errors.address.buildingNo.message
@@ -310,11 +275,7 @@ export const SignUp = (props) => {
                                 ) : null}
                                 <GridBreak />
                                 <Grid item xs={8} md={4}>
-                                    <Button
-                                        variant='contained'
-                                        sx={{ width: 1 / 1 }}
-                                        type = "submit"
-                                    >
+                                    <Button variant='contained' sx={{ width: 1 / 1 }} type='submit'>
                                         Join Leaser
                                     </Button>
                                 </Grid>
