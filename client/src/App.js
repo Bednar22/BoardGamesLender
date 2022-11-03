@@ -8,11 +8,13 @@ import { PrivatePath } from './utils/privateRoute';
 import { NoMatch } from './utils/noMatch';
 import { useAuth, AuthProvider } from './utils/authContext';
 import { Addpost } from './components/posts/AddPost';
+import { Navbar } from './components/navbar/navbar';
 
 function App() {
     return (
         <>
             <AuthProvider>
+                <Navbar></Navbar>
                 <Routes>
                     <Route path='/' element={<Homepage />} />
 

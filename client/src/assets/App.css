@@ -1,38 +1,72 @@
-.App {
-  text-align: center;
+/* CSS classes  */
+
+/* NAVBAR CLASSES */
+.menu-button {
+    color: #faf7f0;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px 10px 10px 10px;
+    /* font-size: large; */
+    position: relative;
+    letter-spacing: 0.1em;
+    text-decoration: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.menu-button:hover:after {
+    width: 100%;
+    left: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.menu-button:after {
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: '';
+    display: block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    background: #faf7f0;
+    transition: width 0.2s ease 0s, left 0.2s ease 0s;
+    width: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.menu {
+    padding: 2vh 1vw 2vh 1vw;
+    display: flex;
+    justify-content: space-between;
+    background-color: #7ec3a6;
 }
 
-.App-link {
-  color: #61dafb;
+.active::after {
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: '';
+    display: block;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    background: #faf7f0;
+    transition: width 0.2s ease 0s, left 0.2s ease 0s;
+    width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.offer-tile:hover .typography-stack {
+    animation-name: tile-text-background-color-change;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in;
+    animation-play-state: running;
+    background-color: #f5f5f5;
+}
+
+@keyframes tile-text-background-color-change {
+    0% {
+        background-color: initial;
+    }
+    100% {
+        background-color: #f5f5f5;
+    }
+}
+
+.link-text {
+    text-decoration: none;
 }
