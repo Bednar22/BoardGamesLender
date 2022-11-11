@@ -7,6 +7,58 @@ import { SortPosts } from './sortPosts';
 import { SinglePost } from './singlePost';
 import { useSearchParams } from 'react-router-dom';
 
+// postId={item.id}
+//                                         renterNickname={item.userNickName}
+//                                         renterScore={item.rating}
+//                                         offerTitle={item.title}
+//                                         pricePerDay={item.price}
+//                                         offerCity={item.city}
+
+const postsExample = [
+    {
+        id: 1,
+        rating: 5,
+        title: 'Grzyb',
+        price: 2,
+        city: 'Wegliniec',
+    },
+    {
+        id: 1,
+        rating: 5,
+        title: 'Grzyb',
+        price: 2,
+        city: 'Wegliniec',
+    },
+    {
+        id: 1,
+        rating: 5,
+        title: 'Grzyb',
+        price: 2,
+        city: 'Wegliniec',
+    },
+    {
+        id: 1,
+        rating: 5,
+        title: 'Grzyb',
+        price: 2,
+        city: 'Wegliniec',
+    },
+    {
+        id: 1,
+        rating: 5,
+        title: 'Grzyb',
+        price: 2,
+        city: 'Wegliniec',
+    },
+    {
+        id: 1,
+        rating: 5,
+        title: 'Grzyb',
+        price: 2,
+        city: 'Wegliniec',
+    },
+];
+
 // TO DO - DO WSZYSKICH KOMPONENTOW W PostsPage !!!!!!!!!!!!!!!!!!!!!!!
 // DODAC WSZYSTKIE FUNKCJE KTORE SCIAGAJA POSTY - WSZYSTKIE I PO KATEGORII
 // DODAC FUNKCJE DO WYSZUKIWANIA POSTOW
@@ -77,6 +129,9 @@ export const PostsPage = (props) => {
 
     const getAllPosts = () => {
         // zgarnianie wszystkich postów z firebase
+
+        //Tylko przyklad
+        setOffers(postsExample);
     };
 
     useEffect(() => {
