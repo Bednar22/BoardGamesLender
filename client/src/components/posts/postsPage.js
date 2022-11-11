@@ -7,13 +7,6 @@ import { SortPosts } from './sortPosts';
 import { SinglePost } from './singlePost';
 import { useSearchParams } from 'react-router-dom';
 
-// postId={item.id}
-//                                         renterNickname={item.userNickName}
-//                                         renterScore={item.rating}
-//                                         offerTitle={item.title}
-//                                         pricePerDay={item.price}
-//                                         offerCity={item.city}
-
 const postsExample = [
     {
         id: 1,

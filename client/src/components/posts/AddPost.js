@@ -24,8 +24,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../utils/firebase-config';
 
-export const Addpost = ({ isAuth }) => {
+export const Addpost = () => {
     const [title, setTitle] = useState();
     const [description, setDescription] = useState('');
     const [pricePerDay, setPricePerDay] = useState('');
@@ -38,52 +40,61 @@ export const Addpost = ({ isAuth }) => {
     const [category, setCategory] = useState('');
     const [error, setError] = useState('');
     const smallSize = useMediaQuery('(max-width:900px)');
-
-    const { logout } = useAuth();
-
+    const { currentUser } = useAuth();
     const annCollection = collection(db, 'Ogłoszenia');
     let navigate = useNavigate();
 
     const categories = ['Strategy', 'Card', 'Deck builder', 'Kids'];
 
-    const addOffer = (e) => {
-        // form data moze byc stad usunieta i tylko przycisk na koncu bez forma, albo z formem zwyklym
-        let formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('price', pricePerDay);
-        formData.append('pricePerWeek', pricePerWeek);
-        formData.append('pricePerMonth', pricePerMonth);
-        formData.append('depositValue', deposit);
-        formData.append('availableFrom', availableFrom.toISOString());
-        formData.append('availableTo', availableTo.toISOString());
-        formData.append('postImage', selectedImage);
+    const addPost = (e) => {
+        const id = Math.floor(Math.random() * 1000000);
+        const storageRef = ref(storage, `images/post$` + id);
+        const uploadTask = uploadBytesResumable(storageRef, selectedImage);
 
-        console.log(category);
-
+        uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    const post = {
+                        title,
+                        description,
+                        pricePerDay,
+                        pricePerWeek,
+                        pricePerMonth,
+                        availableFrom,
+                        availableTo,
+                        imageUrl: downloadURL,
+                        ownerId: currentUser.uid,
+                        owner: currentUser.email,
+                    };
+                    addDoc(annCollection, post);
+                });
+            }
+        );
+        navigate('/');
         e.preventDefault();
     };
-
-    // const createAnn = async () => {
-    //     await addDoc(annCollection, {
-    //         title,
-    //         postText,
-    //         author: { userEmail: auth.currentUser.email, id: auth.currentUser.uid },
-    //     });
-    //     navigate('/');
-    // };
-
-    // useEffect(() => {
-    //     if (!isAuth) {
-    //         navigate('/Login');
-    //     }
-    // }, []);
 
     return (
         <>
             <Container maxWidth='lg'>
                 <Paper sx={{ p: 2, mb: 6 }}>
-                    <form onSubmit={(e) => addOffer(e)}>
+                    <form onSubmit={(e) => addPost(e)}>
                         <Box
                             sx={
                                 smallSize
