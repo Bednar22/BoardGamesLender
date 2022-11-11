@@ -7,9 +7,10 @@ import { NoAuthPath } from './utils/noAuthPath';
 import { PrivatePath } from './utils/privateRoute';
 import { NoMatch } from './utils/noMatch';
 import { useAuth, AuthProvider } from './utils/authContext';
-import { Addpost } from './components/posts/AddPost';
+import { Addpost } from './components/posts/addPost';
 import { Navbar } from './components/navbar/navbar';
 import { UserProfileMain } from './components/userProfile/userProfileMain';
+import { PostsPage } from './components/posts/postsPage';
 
 function App() {
     return (
@@ -42,6 +43,15 @@ function App() {
                         element={
                             <PrivatePath>
                                 <Addpost></Addpost>
+                            </PrivatePath>
+                        }
+                    ></Route>
+
+                    <Route
+                        path='posts'
+                        element={
+                            <PrivatePath>
+                                <PostsPage></PostsPage>
                             </PrivatePath>
                         }
                     ></Route>

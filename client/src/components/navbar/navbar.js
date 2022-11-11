@@ -20,8 +20,13 @@ export const Navbar = (props) => {
                     <NavLink className='menu-button' to='/'>
                         Home
                     </NavLink>
+
+                    <NavLink className='menu-button' to='/posts'>
+                        Posts
+                    </NavLink>
+
                     <NavLink className='menu-button' to='/addPost'>
-                        Offers
+                        Add post
                     </NavLink>
 
                     {currentUser ? <UserLoggedButton /> : <NotLoggedButton />}
