@@ -14,13 +14,9 @@ export const Navbar = (props) => {
         <>
             <Box className='menu' sx={{ mb: 8 }}>
                 <Link className='menu-button' to='/'>
-                    LOGO?
+                    BoardGamesLender
                 </Link>
                 <Stack direction='row'>
-                    <NavLink className='menu-button' to='/'>
-                        Home
-                    </NavLink>
-
                     <NavLink className='menu-button' to='/posts'>
                         Posts
                     </NavLink>

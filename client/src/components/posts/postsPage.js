@@ -6,6 +6,8 @@ import { PostFilter } from './postFilter';
 import { SortPosts } from './sortPosts';
 import { SinglePost } from './singlePost';
 import { useSearchParams } from 'react-router-dom';
+import { collection, doc, getDocs } from 'firebase/firestore';
+import { db } from '../../utils/firebase-config';
 
 const postsExample = [
     {
@@ -70,6 +72,14 @@ export const PostsPage = (props) => {
     const [searchBy, setSearchBy] = useState(null);
     const [offers, setOffers] = useState([]);
 
+    const getAllPosts = async () => {
+        const querySnapshot = await getDocs(collection(db, 'Ogłoszenia'));
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, ' => ', doc.data());
+            setOffers((current) => [...current, doc.data()]);
+        });
+    };
+
     const priceAscSort = (a, b) => {
         return b.price - a.price;
     };
@@ -118,13 +128,6 @@ export const PostsPage = (props) => {
             default:
                 break;
         }
-    };
-
-    const getAllPosts = () => {
-        // zgarnianie wszystkich postów z firebase
-
-        //Tylko przyklad
-        setOffers(postsExample);
     };
 
     useEffect(() => {
@@ -198,11 +201,12 @@ export const PostsPage = (props) => {
                                 <Grid item xs={10} sm={8} md={6} lg={4} xl={3}>
                                     <SinglePost
                                         postId={item.id}
-                                        renterNickname={item.userNickName}
+                                        renterNickname={item.owner}
                                         renterScore={item.rating}
                                         offerTitle={item.title}
-                                        pricePerDay={item.price}
+                                        pricePerDay={item.pricePerDay}
                                         offerCity={item.city}
+                                        imageUrl={item.imageUrl}
                                     ></SinglePost>
                                 </Grid>
                             );

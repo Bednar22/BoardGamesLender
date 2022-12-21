@@ -27,7 +27,7 @@ export const Login = () => {
             setLoading(true);
             const pies = await login(data.email, data.password);
             console.log(pies);
-            navigate('/');
+            navigate('/posts');
         } catch (error) {
             setError('Failed to log in');
             console.log(error);

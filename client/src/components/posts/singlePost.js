@@ -2,12 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Paper, Typography, Box, Stack, Rating, Skeleton } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-export const SinglePost = ({ postId, renterNickname, renterScore, offerTitle, pricePerDay, offerCity }) => {
+export const SinglePost = ({ postId, renterNickname, renterScore, offerTitle, pricePerDay, offerCity, imageUrl }) => {
     const [offerImage, setOfferImage] = useState('');
-
-    useEffect(() => {
-        //sciganie danych do obrazka
-    }, [postId]);
 
     return (
         <>
@@ -18,9 +14,9 @@ export const SinglePost = ({ postId, renterNickname, renterScore, offerTitle, pr
                 >
                     <Paper className='offer-tile'>
                         <Stack sx={{ p: 1 }}>
-                            {offerImage ? (
+                            {imageUrl ? (
                                 <img
-                                    src={URL.createObjectURL(offerImage)}
+                                    src={imageUrl}
                                     alt={offerTitle}
                                     style={{
                                         borderRadius: '8px',
@@ -46,7 +42,7 @@ export const SinglePost = ({ postId, renterNickname, renterScore, offerTitle, pr
                                     <Rating readOnly precision={0.1} value={renterScore} />
                                 </Stack>
                                 <Stack alignItems='center'>
-                                    <Typography fontWeight='bold'>{pricePerDay} points/day</Typography>
+                                    <Typography fontWeight='bold'>{pricePerDay} zł/day</Typography>
                                     <Typography> {offerCity}</Typography>
                                 </Stack>
                             </Stack>

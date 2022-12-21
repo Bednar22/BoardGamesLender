@@ -34,7 +34,7 @@
     padding: 2vh 1vw 2vh 1vw;
     display: flex;
     justify-content: space-between;
-    background-color: #7ec3a6;
+    background-color: #233877;
 }
 
 .active::after {
