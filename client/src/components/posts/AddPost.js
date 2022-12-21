@@ -152,7 +152,7 @@ export const Addpost = () => {
                                 <Grid item xs={6} md={6}>
                                     <TextField
                                         required
-                                        label='Price per day'
+                                        label='Price '
                                         type='text'
                                         size='small'
                                         fullWidth
@@ -160,66 +160,6 @@ export const Addpost = () => {
                                         onChange={(e) => setPricePerDay(e.target.value)}
                                     ></TextField>
                                 </Grid>
-
-                                <Grid item xs={6} md={6}>
-                                    <TextField
-                                        required
-                                        label='Price per week'
-                                        type='text'
-                                        size='small'
-                                        fullWidth
-                                        value={pricePerWeek}
-                                        onChange={(e) => setPricePerWeek(e.target.value)}
-                                    ></TextField>
-                                </Grid>
-
-                                <Grid item xs={6} md={6}>
-                                    <TextField
-                                        required
-                                        label='Price per month'
-                                        type='text'
-                                        size='small'
-                                        fullWidth
-                                        value={pricePerMonth}
-                                        onChange={(e) => setPricePerMonth(e.target.value)}
-                                    ></TextField>
-                                </Grid>
-
-                                <Grid item xs={6} md={6}>
-                                    <TextField
-                                        label='Deposit'
-                                        type='text'
-                                        size='small'
-                                        fullWidth
-                                        value={deposit}
-                                        onChange={(e) => setDeposit(e.target.value)}
-                                    ></TextField>
-                                </Grid>
-
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <Grid item xs={6}>
-                                        <DatePicker
-                                            label='Available from'
-                                            value={availableFrom}
-                                            onChange={(newValue) => {
-                                                setAvailableFrom(newValue);
-                                            }}
-                                            renderInput={(params) => <TextField {...params} size='small' />}
-                                            minDate={Date.now()}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <DatePicker
-                                            label='Available to'
-                                            value={availableTo}
-                                            onChange={(newValue) => {
-                                                setAvailableTo(newValue);
-                                            }}
-                                            minDate={availableFrom}
-                                            renderInput={(params) => <TextField {...params} size='small' />}
-                                        />
-                                    </Grid>
-                                </LocalizationProvider>
                             </Grid>
                         </Box>
                         <Box

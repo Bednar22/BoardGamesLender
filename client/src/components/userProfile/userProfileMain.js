@@ -1,6 +1,9 @@
+import { UserSettings } from './userSettings';
+
 export const UserProfileMain = () => {
-    return;
-    <>
-        <h1>User prfile</h1>
-    </>;
+    return (
+        <>
+            <UserSettings></UserSettings>
+        </>
+    );
 };

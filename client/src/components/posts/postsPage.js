@@ -6,7 +6,7 @@ import { PostFilter } from './postFilter';
 import { SortPosts } from './sortPosts';
 import { SinglePost } from './singlePost';
 import { useSearchParams } from 'react-router-dom';
-import { collection, doc, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../utils/firebase-config';
 
 const postsExample = [
@@ -101,6 +101,7 @@ export const PostsPage = (props) => {
         if (categoryId === -1) {
             getAllPosts();
         } else {
+            const q = query(collection(db, 'Ogłoszenia'), where('capital', '==', true));
             //tutaj tylko posty danej kateorii, mozna usunąc jak niepotrzebne
             console.log('GET FROM ONE CATEGORY');
         }
